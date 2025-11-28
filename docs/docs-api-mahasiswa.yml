@@ -1,0 +1,131 @@
+openapi: '3.0.3'
+info:
+  title: API CRUD Mahasiswa
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+
+paths:
+  /mahasiswa:
+    get:
+      summary: Ambil daftar mahasiswa
+      tags:
+        - Mahasiswa
+      responses:
+        '200':
+          description: Daftar mahasiswa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mahasiswa'
+
+    post:
+      summary: Tambah data mahasiswa baru
+      tags:
+        - Mahasiswa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MahasiswaInput'
+      responses:
+        '201':
+          description: Mahasiswa berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mahasiswa'
+
+  /mahasiswa/{nim}:
+    get:
+      summary: Ambil detail mahasiswa berdasarkan NIM
+      tags:
+        - Mahasiswa
+      parameters:
+        - in: path
+          name: nim
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detail mahasiswa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mahasiswa'
+        '404':
+          description: Data tidak ditemukan
+
+    put:
+      summary: Update data mahasiswa berdasarkan NIM
+      tags:
+        - Mahasiswa
+      parameters:
+        - in: path
+          name: nim
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MahasiswaInput'
+      responses:
+        '200':
+          description: Data mahasiswa berhasil di-update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mahasiswa'
+
+    delete:
+      summary: Hapus data mahasiswa berdasarkan NIM
+      tags:
+        - Mahasiswa
+      parameters:
+        - in: path
+          name: nim
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Data berhasil dihapus
+
+components:
+  schemas:
+    Mahasiswa:
+      type: object
+      properties:
+        nim:
+          type: string
+          example: "2023001"
+        nama:
+          type: string
+          example: "Budi Santoso"
+        fakultas:
+          type: string
+          example: "Teknik Informatika"
+
+    MahasiswaInput:
+      type: object
+      required:
+        - nim
+        - nama
+        - fakultas
+      properties:
+        nim:
+          type: string
+          example: "2023001"
+        nama:
+          type: string
+          example: "Budi Santoso"
+        fakultas:
+          type: string
+          example: "Teknik Informatika"
